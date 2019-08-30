@@ -1,0 +1,61 @@
+version: "3.2"
+services:
+  php:
+    container_name: ${COMPOSE_PROJECT_NAME}_php
+    #image: vavyskov/php:${PHP_VERSION}-apache-stretch
+    build:
+      context: ./php
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+    environment:
+      VIRTUAL_HOST: ${COMPOSE_PROJECT_NAME}.local
+    hostname: ${COMPOSE_PROJECT_NAME}.local
+    depends_on:
+      - mariadb
+    networks:
+      - backend
+      - frontend
+    ports:
+      - "8001:80"
+    volumes:
+      - html:/var/www/html
+      #- ./html:/var/www/html
+  mariadb:
+    container_name: ${COMPOSE_PROJECT_NAME}_mariadb
+    image: mariadb:${MARIADB_VERSION:-latest}
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MARIADB_DATABASE}"
+      MYSQL_USER: "${MARIADB_USERNAME}"
+      MYSQL_PASSWORD: "${MARIADB_PASSWORD}"
+    networks:
+      - backend
+    ports:
+      - "33061:3306"
+    volumes:
+      - mariadb:/var/lib/mysql
+      #- ./mariadb:/var/lib/mysql
+    #restart: always
+  adminer:
+    container_name: ${COMPOSE_PROJECT_NAME}_adminer
+    image: adminer:fastcgi
+    networks:
+      - backend
+    ports:
+      - "8080:8080"
+  mailcatcher:
+    container_name: ${COMPOSE_PROJECT_NAME}_mailcatcher
+    image: vavyskov/mailcatcher
+    #build:
+    #  context: ./mailcatcher
+    networks:
+      - backend
+    ports:
+      - "1080:80"
+      - "1025:25"
+networks:
+  backend:
+  frontend:
+volumes:
+  html:
+  mariadb:
