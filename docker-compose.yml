@@ -2,11 +2,11 @@ version: "3.2"
 services:
   php:
     container_name: ${COMPOSE_PROJECT_NAME}_php
-    #image: vavyskov/php:${PHP_VERSION}-apache-stretch
-    build:
-      context: ./php
-      args:
-        PHP_VERSION: ${PHP_VERSION}
+    image: vavyskov/php:${PHP_VERSION}-apache-stretch
+#    build:
+#      context: ./php
+#      args:
+#        PHP_VERSION: ${PHP_VERSION}
     environment:
       VIRTUAL_HOST: ${COMPOSE_PROJECT_NAME}.local
     hostname: ${COMPOSE_PROJECT_NAME}.local
@@ -53,6 +53,29 @@ services:
     ports:
       - "1080:80"
       - "1025:25"
+  ssh:
+    container_name: ${COMPOSE_PROJECT_NAME}_ssh
+    image: vavyskov/ssh:vavyskov-php-${PHP_VERSION}-apache-stretch
+#    build:
+#      context: ./ssh
+#      args:
+#        PHP_FROM: ${SSH_PHP_FROM}
+#        COMPOSER_FROM: ${SSH_COMPOSER_FROM}
+    environment:
+      USER_NAME: ${USER_NAME}
+      USER_PASSWORD: ${USER_PASSWORD}
+      USER_GROUP: ${USER_GROUP}
+      #USER_HOME: ${USER_HOME}
+    networks:
+      - backend
+    ports:
+      - "2201:22"
+    volumes:
+      - html:/var/www/html
+      #- ./ssh:/data/.ssh:ro
+      ## Uncomment next line if you're bringing your own sshd_config
+      # - ./etc/ssh/sshd_config:/etc/ssh/sshd_config:ro
+    #restart: on-failure:10
 networks:
   backend:
   frontend:

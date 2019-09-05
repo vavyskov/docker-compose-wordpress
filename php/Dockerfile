@@ -129,11 +129,16 @@ COPY config/public ${DOCUMENT_ROOT}
 ## Set permission (33 is the standard uid/gid for "www-data" in Debian)
 RUN chown -R 33:33 ${USER_HOME}
 
+
+
+## Composer (get path command: which composer)
+#COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+
+
+
+EXPOSE 80
+
 VOLUME /var/www/html
 
 #WORKDIR /var/www/html
-
-#COPY docker-entrypoint.sh /usr/local/bin/
-#ENTRYPOINT ["docker-entrypoint.sh"]
-
-#CMD ["apache2-foreground"]
