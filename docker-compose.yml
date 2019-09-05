@@ -4,7 +4,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_php
     image: vavyskov/php:${PHP_VERSION}-apache-stretch
 #    build:
-#      context: ./php
+#      context: ../docker-php/stretch/apache
 #      args:
 #        PHP_VERSION: ${PHP_VERSION}
     environment:
@@ -57,10 +57,10 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_ssh
     image: vavyskov/ssh:vavyskov-php-${PHP_VERSION}-apache-stretch
 #    build:
-#      context: ./ssh
+#      context: ../docker-ssh/stretch
 #      args:
-#        PHP_FROM: ${SSH_PHP_FROM}
-#        COMPOSER_FROM: ${SSH_COMPOSER_FROM}
+#        SSH_PHP_FROM: ${PHP_FROM}
+#        SSH_COMPOSER_FROM: ${COMPOSER_FROM}
     environment:
       USER_NAME: ${USER_NAME}
       USER_PASSWORD: ${USER_PASSWORD}
@@ -76,6 +76,22 @@ services:
       ## Uncomment next line if you're bringing your own sshd_config
       # - ./etc/ssh/sshd_config:/etc/ssh/sshd_config:ro
     #restart: on-failure:10
+#  samba:
+#    container_name: ${COMPOSE_PROJECT_NAME}_samba
+#    image: vavyskov/samba:alpine3.10
+##    build:
+##      context: ../docker-samba/alpine3.10
+#    environment:
+#      USER_NAME: ${USER_NAME}
+#      USER_PASSWORD: ${USER_PASSWORD}
+#      USER_GROUP: ${USER_GROUP}
+#      #USER_HOME: ${USER_HOME}
+#    networks:
+#      - backend
+#    ports:
+#      - "4451:445"
+#    volumes:
+#      - html:/var/www/html
 networks:
   backend:
   frontend:
