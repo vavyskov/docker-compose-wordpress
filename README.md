@@ -1,6 +1,12 @@
 # docker-compose-wordpress
 
-See: .env
+See `.env` file
+
+Adminer:
+- port: 8080
+
+Mailcatcher:
+- port: 1080
 
 SSH:
 - port: 2201
