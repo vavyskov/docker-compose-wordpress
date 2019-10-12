@@ -63,7 +63,6 @@ LAMP stack (Debian, Apache, MariaDB, PHP, Adminer, MailCatcher)
 
 ## Note
 
-- See `.env` file
 - Skype (Windows): Go to Tools → Options → Advanced → Connections and uncheck the box use port 80 and 443 as alternative.
 
 ## ToDo
